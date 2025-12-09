@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AlertCircle, Mail, MailCheck, Server } from 'lucide-react';
+import { AlertCircle, Mail, Server } from 'lucide-react';
 
 interface EmailServiceStatus {
     mode: string;
@@ -12,17 +12,8 @@ interface EmailServiceStatus {
 export default function EmailServiceBanner() {
     const [emailStatus, setEmailStatus] = useState<EmailServiceStatus | null>(null);
     const [loading, setLoading] = useState(true);
-    const [dismissed, setDismissed] = useState(false);
 
     useEffect(() => {
-        // Check if banner was previously dismissed in this session
-        const wasDismissed = sessionStorage.getItem('emailBannerDismissed') === 'true';
-        if (wasDismissed) {
-            setDismissed(true);
-            setLoading(false);
-            return;
-        }
-
         // Fetch from backend API (localhost:5001)
         fetch('http://localhost:5001/api/health/email-service')
             .then((res) => {
@@ -48,23 +39,18 @@ export default function EmailServiceBanner() {
             });
     }, []);
 
-    const handleDismiss = () => {
-        setDismissed(true);
-        sessionStorage.setItem('emailBannerDismissed', 'true');
-    };
-
-    if (loading || dismissed || !emailStatus) {
+    if (loading || !emailStatus) {
         return null;
     }
 
-    // Only show banner if email is not fully configured or in console logging mode
-    const shouldShow =
-        emailStatus.status === 'fallback' ||
-        emailStatus.status === 'not-configured' ||
-        (emailStatus.environment === 'local' && emailStatus.mode === 'console-logging');
+    // Hide banner completely when email service is properly configured and working
+    // Show banner when: not configured, fallback mode, or console logging
+    const isEmailWorking =
+        emailStatus.configured &&
+        (emailStatus.mode === 'smtp' || emailStatus.mode === 'azure-communication-services');
 
-    if (!shouldShow) {
-        return null;
+    if (isEmailWorking) {
+        return null; // Email is working, hide the banner
     }
 
     const getIcon = () => {
@@ -88,51 +74,42 @@ export default function EmailServiceBanner() {
     };
 
     return (
-        <div className={`border-l-4 p-4 mb-6 rounded-r-md ${getBannerStyle()}`}>
-            <div className="flex items-start justify-between">
-                <div className="flex items-start gap-3">
-                    <div className="mt-0.5">
-                        {getIcon()}
-                    </div>
-                    <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-semibold text-sm">
-                                {emailStatus.status === 'not-configured' && 'Email Service Not Configured'}
-                                {emailStatus.status === 'fallback' && 'Email Service Running in Development Mode'}
-                                {emailStatus.status === 'configured' && 'Email Service Status'}
-                            </h3>
-                            <span className="text-xs px-2 py-0.5 rounded-full bg-white bg-opacity-50">
-                                {emailStatus.environment === 'local' ? 'Local' : 'Azure'}
-                            </span>
-                        </div>
-                        <p className="text-sm">
-                            {emailStatus.message}
-                        </p>
-                        {emailStatus.mode === 'console-logging' && (
-                            <p className="text-xs mt-2 opacity-80">
-                                💡 Invitation emails are being logged to the backend console.
-                                <button
-                                    onClick={() => window.open('/docs/troubleshooting/email-service-guide.md', '_blank')}
-                                    className="underline ml-1 hover:opacity-70"
-                                >
-                                    Configure SMTP
-                                </button> to send real emails.
-                            </p>
-                        )}
-                        {emailStatus.status === 'not-configured' && (
-                            <p className="text-xs mt-2 opacity-80">
-                                ⚠️ Email notifications will not be sent. Please configure email service in Azure Portal or appsettings.
-                            </p>
-                        )}
-                    </div>
+        <div className={`border-l-4 p-6 mt-8 rounded-r-lg ${getBannerStyle()}`}>
+            <div className="flex items-start gap-4">
+                <div className="mt-0.5">
+                    {getIcon()}
                 </div>
-                <button
-                    onClick={handleDismiss}
-                    className="text-current opacity-50 hover:opacity-100 ml-4"
-                    aria-label="Dismiss"
-                >
-                    ✕
-                </button>
+                <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-semibold text-base">
+                            {emailStatus.status === 'not-configured' && 'Email Service Not Configured'}
+                            {emailStatus.status === 'fallback' && 'Email Service Running in Development Mode'}
+                            {emailStatus.status === 'configured' && 'Email Service Status'}
+                        </h3>
+                        <span className="text-xs px-2 py-1 rounded-full bg-white bg-opacity-50 font-medium">
+                            {emailStatus.environment === 'local' ? 'Local' : 'Azure'}
+                        </span>
+                    </div>
+                    <p className="text-sm mb-3">
+                        {emailStatus.message}
+                    </p>
+                    {emailStatus.mode === 'console-logging' && (
+                        <p className="text-xs opacity-80">
+                            💡 Invitation emails are being logged to the backend console.
+                            <button
+                                onClick={() => window.open('/docs/troubleshooting/email-service-guide.md', '_blank')}
+                                className="underline ml-1 hover:opacity-70 font-medium"
+                            >
+                                Configure SMTP
+                            </button> to send real emails.
+                        </p>
+                    )}
+                    {emailStatus.status === 'not-configured' && (
+                        <p className="text-xs opacity-80">
+                            ⚠️ Email notifications will not be sent. Please configure email service in Azure Portal or appsettings.
+                        </p>
+                    )}
+                </div>
             </div>
         </div>
     );

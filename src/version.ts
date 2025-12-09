@@ -1,5 +1,5 @@
 // This file is auto-generated. Do not edit manually.
-// Generated on: 2025-12-08T19:09:14.459Z
+// Generated on: 2025-12-09T13:21:26.986Z
 
 export interface VersionInfo {
   version: string;
@@ -11,12 +11,12 @@ export interface VersionInfo {
 }
 
 export const version: VersionInfo = {
-  version: 'v21',
-  commitCount: 21,
-  commitHash: 'e2c246d',
+  version: 'v1',
+  commitCount: 1,
+  commitHash: '398dfe3',
   branch: 'main',
-  buildDate: '2025-12-08T19:09:14.459Z',
-  lastCommitDate: '2025-12-08 08:45:29 +0400',
+  buildDate: '2025-12-09T13:21:26.986Z',
+  lastCommitDate: '2025-12-09 12:53:06 +0400',
 };
 
 export default version;

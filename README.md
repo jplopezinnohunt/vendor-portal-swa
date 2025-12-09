@@ -1,26 +1,32 @@
-# Vendor Portal (Static Web App)
+# Vendor MDM Portal
 
-This repository contains the frontend React application for the Vendor MDM Portal. It is deployed as an Azure Static Web App.
+This is the **Vendor Master Data Management** application frontend - built on the core platform.
 
-## Stack
-- **Framework**: React 19
-- **Build Tool**: Vite
-- **Language**: TypeScript
-- **Styling**: TailwindCSS
+## Application Architecture
 
-## Development
+This application leverages the core platform services:
+- **Core Platform APIs**: Authentication, attachments, common services
+- **Core Artifact Processors**: Email notifications, file processing
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
+## Technology Stack
 
-2. Create `.env.local` with your API base URL:
-   ```
-   VITE_API_BASE_URL=http://localhost:5000
-   ```
+- **React 19** with TypeScript
+- **Vite** for build tooling
+- **TailwindCSS** for styling
+- **Azure Static Web Apps** for hosting
 
-3. Run locally:
-   ```bash
-   npm run dev
-   ```
+## Local Development
+
+```bash
+npm install
+npm run dev
+```
+
+Access at: `http://localhost:5173`
+
+## Configuration
+
+Create `.env.local` from `.env.example` and configure:
+- API endpoint URLs
+- Feature flags
+- Environment-specific settings

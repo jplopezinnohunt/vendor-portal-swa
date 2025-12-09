@@ -64,10 +64,7 @@ export const Login: React.FC = () => {
           </div>
         </div>
 
-        {/* Email Service Status Banner */}
-        <div className="max-w-3xl w-full mx-auto mb-8">
-          <EmailServiceBanner />
-        </div>
+
 
         {/* Main Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl w-full mb-16">
@@ -193,6 +190,11 @@ export const Login: React.FC = () => {
               <span>No Azure AD</span>
             </div>
           </div>
+        </div>
+
+        {/* Email Service Status Section */}
+        <div className="max-w-3xl w-full mx-auto mb-8">
+          <EmailServiceBanner />
         </div>
 
         {/* Footer */}
