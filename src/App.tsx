@@ -16,6 +16,7 @@ import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { InviteVendorForm } from './pages/admin/InviteVendorForm';
 import { InvitationManagement } from './pages/admin/InvitationManagement';
 import { SapSettings } from './pages/admin/SapSettings';
+import Diagnostics from './pages/admin/Diagnostics';
 
 // Protected Route Guard
 const ProtectedRoute = ({ children, allowedRoles }: { children?: React.ReactNode, allowedRoles?: UserRole[] }) => {
@@ -134,7 +135,15 @@ const App: React.FC = () => {
           </Route>
 
           {/* Catch all */}
-          <Route path="*" element={<RoleBasedRedirect />} />
+          {/* Catch all */}
+          <Route path="/admin/diagnostics" element={
+            <ProtectedRoute allowedRoles={['Admin', 'Approver']}>
+              <MainLayout>
+                <Diagnostics />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
