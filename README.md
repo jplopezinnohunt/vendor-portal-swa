@@ -30,3 +30,4 @@ Create `.env.local` from `.env.example` and configure:
 - API endpoint URLs
 - Feature flags
 - Environment-specific settings
+Deployment check Wed Dec 10 21:12:54 +04 2025
