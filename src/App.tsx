@@ -15,6 +15,7 @@ import { OnboardingReview } from './pages/approver/OnboardingReview';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { InviteVendorForm } from './pages/admin/InviteVendorForm';
 import { InvitationManagement } from './pages/admin/InvitationManagement';
+import { SapSettings } from './pages/admin/SapSettings';
 
 // Protected Route Guard
 const ProtectedRoute = ({ children, allowedRoles }: { children?: React.ReactNode, allowedRoles?: UserRole[] }) => {
@@ -108,6 +109,11 @@ const App: React.FC = () => {
             <Route path="admin/dashboard" element={
               <ProtectedRoute allowedRoles={['Admin']}>
                 <AdminDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="admin/sap-settings" element={
+              <ProtectedRoute allowedRoles={['Admin']}>
+                <SapSettings />
               </ProtectedRoute>
             } />
             <Route path="admin/rules" element={

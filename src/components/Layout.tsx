@@ -14,7 +14,8 @@ import {
   Settings,
   ShieldAlert,
   Mail,
-  UserPlus
+  UserPlus,
+  Database
 } from 'lucide-react';
 
 const VENDOR_NAV = [
@@ -32,6 +33,7 @@ const APPROVER_NAV = [
 
 const ADMIN_NAV = [
   { name: 'System Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+  { name: 'SAP Settings', href: '/admin/sap-settings', icon: Database },
   { name: 'Workflow Rules', href: '/admin/rules', icon: Settings },
   { name: 'Audit Logs', href: '/admin/audit', icon: ShieldAlert },
   { name: 'Invite Vendor', href: '/admin/invite-vendor', icon: UserPlus },
